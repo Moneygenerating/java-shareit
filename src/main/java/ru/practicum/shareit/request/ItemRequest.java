@@ -1,12 +1,16 @@
 package ru.practicum.shareit.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.practicum.shareit.user.User;
+import lombok.NoArgsConstructor;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDate;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemRequest {
     //уникальный идентификатор запроса
     private Long id;
