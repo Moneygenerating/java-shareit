@@ -16,7 +16,7 @@ public class Item {
     //развёрнутое описание
     private String description;
     //статус о том, доступна или нет вещь для аренды
-    private boolean available;
+    private Boolean available;
     //владелец вещи
     private Long owner;
     //ссылка на соответствующий запрос

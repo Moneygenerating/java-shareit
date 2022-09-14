@@ -31,4 +31,16 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Long userId, Long itemId) {
         itemDao.deleteByUserIdAndItemId(userId, itemId);
     }
+
+    @Override
+    public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
+        itemDto.setId(itemId);
+        Item item = ItemMapper.toItem(itemDto, userId);
+        return ItemMapper.toItemDto(itemDao.updateItem(itemId, item));
+    }
+
+    @Override
+    public ItemDto getItemById(Long itemId){
+        return ItemMapper.toItemDto(itemDao.getItemById(itemId));
+    }
 }

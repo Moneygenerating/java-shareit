@@ -27,7 +27,7 @@ public class ItemDto {
     private String description;
     //статус о том, доступна или нет вещь для аренды
     @NotNull(groups = {Create.class, Update.class})
-    private boolean available;
+    private Boolean available;
     //владелец вещи
     private Long owner;
     //ссылка на соответствующий запрос

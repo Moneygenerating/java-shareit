@@ -11,4 +11,8 @@ public interface ItemDao {
 
     void deleteByUserIdAndItemId(long userId, long itemId);
 
+    Item updateItem(Long itemId, Item item);
+
+    Item getItemById(Long itemId);
+
 }
