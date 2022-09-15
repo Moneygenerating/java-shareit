@@ -58,10 +58,8 @@ public class ItemDaoImpl implements ItemDao {
                 .collect(Collectors.toList()).get(0);
         //удаляем его
         items.remove(itemForUpdate);
-        //спорно но можно
-        if (item.getId() != null) {
-            itemForUpdate.setId(item.getId());
-        }
+
+
         if (item.getName() != null) {
             itemForUpdate.setName(item.getName());
         }

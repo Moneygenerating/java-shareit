@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class ErrorControllerHandler {
     @ExceptionHandler
-    public ResponseEntity<?> catchNotFoundException(NotFoundException e) {
+    public ResponseEntity<?> catchNotFoundException(final NotFoundException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -18,6 +18,11 @@ public class ErrorControllerHandler {
     @ExceptionHandler
     public ResponseEntity<?> catchValidationException(final ValidationException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> catchConflictError(final ConflictErrorException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 }
 

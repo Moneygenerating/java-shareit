@@ -2,7 +2,6 @@ package ru.practicum.shareit.user.dto;
 
 import lombok.*;
 import ru.practicum.shareit.service.Create;
-import ru.practicum.shareit.service.Update;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,13 +13,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserDto {
     //уникальный идентификатор пользователя
-    @NotNull(groups = {Update.class})
     private Long id;
     //имя или логин пользователя
-    @NotNull(groups = {Update.class})
     private String name;
     //email
-    @NotNull(groups = {Create.class, Update.class})
+    @NotNull(groups = {Create.class})
+    //@UniqueElements(groups = {Update.class})
     private String email;
 
 }

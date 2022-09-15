@@ -35,7 +35,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
-        itemDto.setId(itemId);
         Item item = ItemMapper.toItem(itemDto, userId);
         return ItemMapper.toItemDto(itemDao.updateItem(itemId, item));
     }
