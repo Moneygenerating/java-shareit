@@ -6,7 +6,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = "email")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

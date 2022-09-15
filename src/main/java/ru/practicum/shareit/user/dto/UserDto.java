@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = "email")
+//@EqualsAndHashCode(of = "email")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -18,7 +18,6 @@ public class UserDto {
     private String name;
     //email
     @NotNull(groups = {Create.class})
-    //@UniqueElements(groups = {Update.class})
     private String email;
 
 }

@@ -36,17 +36,6 @@ public class UserDaoImpl implements UserDao {
                 .collect(Collectors.toList()).get(0);
     }
 
-    public void validateUser(User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank() || user.getEmail().isEmpty()) {
-            throw new ValidationException("Отсутствует email");
-        }
-
-        if (!user.getEmail().endsWith(".com") || !user.getEmail().contains("@")) {
-            throw new ValidationException("Передан неверный email");
-        }
-
-    }
-
     @Override
     public User updateUser(Long userId, User user) {
         //вытаскиваем юзера
@@ -56,23 +45,61 @@ public class UserDaoImpl implements UserDao {
                 .collect(Collectors.toList())
                 .get(0);
 
-        //удаляем
-        users.remove(userForUpdate);
+        User userForRemove = users
+                .stream()
+                .filter(user1 -> user1.getId() == userId)
+                .collect(Collectors.toList())
+                .get(0);
+
         if (user.getName() != null) {
             userForUpdate.setName(user.getName());
         }
         if (user.getEmail() != null) {
-            users.forEach(user1 -> {
-                if (Objects.equals(user1.getEmail(), user.getEmail())) {
-                    throw new ConflictErrorException("Подьзователь с таким email уже существует.");
-                }
-            });
+            validateEmailForDouble(user);
             userForUpdate.setEmail(user.getEmail());
 
         }
+
+        //удаляем
+        users.remove(userForRemove);
+
         //добавляем
         users.add(userForUpdate);
         return userForUpdate;
+    }
+
+    @Override
+    public User getUserById(Long userId) {
+        return users
+                .stream()
+                .filter(user -> Objects.equals(user.getId(), userId))
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    @Override
+    public void deleteUser(Long userId){
+        users.remove(getUserById(userId));
+    }
+
+
+    public void validateUser(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank() || user.getEmail().isEmpty()) {
+            throw new ValidationException("Отсутствует email");
+        }
+
+        if (!user.getEmail().endsWith(".com") || !user.getEmail().contains("@")) {
+            throw new ValidationException("Передан неверный email");
+        }
+        validateEmailForDouble(user);
+    }
+
+    public void validateEmailForDouble(User user) {
+        users.forEach(user1 -> {
+            if (Objects.equals(user1.getEmail(), user.getEmail())) {
+                throw new ConflictErrorException("Подьзователь с таким email уже существует.");
+            }
+        });
     }
 
 }
