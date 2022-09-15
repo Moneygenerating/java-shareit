@@ -2,9 +2,9 @@ package ru.practicum.shareit.user;
 
 import ru.practicum.shareit.user.dto.UserDto;
 
-import java.util.Set;
+import java.util.List;
 
 public interface UserService {
-    Set<UserDto> getAllUsers();
-    UserDto saveUser(UserDto user);
+    List<UserDto> getAllUsers();
+    UserDto createUser(UserDto user);
 }

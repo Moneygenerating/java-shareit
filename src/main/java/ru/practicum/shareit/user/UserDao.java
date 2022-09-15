@@ -1,10 +1,10 @@
 package ru.practicum.shareit.user;
 
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.Set;
 
 public interface UserDao {
-    Set<UserDto> findAll();
-    UserDto save(UserDto user);
+    Set<User> findAll();
+    User save(User user);
 }

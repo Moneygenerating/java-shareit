@@ -1,11 +1,12 @@
 package ru.practicum.shareit.user.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = "email")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {

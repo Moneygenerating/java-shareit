@@ -22,8 +22,5 @@ public class UserDto {
     //email
     @NotNull(groups = {Create.class, Update.class})
     private String email;
-    public UserDto(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
+
 }

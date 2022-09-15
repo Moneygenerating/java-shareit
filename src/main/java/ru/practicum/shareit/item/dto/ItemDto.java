@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.service.Create;
 import ru.practicum.shareit.service.Update;
@@ -14,7 +13,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class ItemDto {
     //уникальный идентификатор вещи
     @NotNull(groups = {Update.class})
