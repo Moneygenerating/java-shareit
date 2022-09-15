@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
@@ -40,7 +41,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto getItemById(Long itemId){
+    public ItemDto getItemById(Long itemId) {
         return ItemMapper.toItemDto(itemDao.getItemById(itemId));
+    }
+
+    @Override
+    public ItemDto getAvailableItem(long userId, String text) {
+        text = text.toLowerCase();
+
+        ItemDto itemDto = ItemMapper.toItemDto(itemDao.getAvailableItem(userId, text));
+
+        if (!itemDto.getAvailable()) {
+            throw new ValidationException("Предмет не доступен");
+        } else {
+            return itemDto;
+        }
     }
 }

@@ -31,6 +31,12 @@ public class ItemController {
         return itemService.getItemById(itemId);
     }
 
+    @GetMapping("/search")
+    public ItemDto getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
+                                    @RequestParam  String text) {
+        return itemService.getAvailableItem(userId, text);
+    }
+
     @PostMapping
     public ItemDto add(@RequestHeader("X-Sharer-User-Id") Long userId,
                        @Validated({Create.class}) @RequestBody ItemDto item) {

@@ -11,4 +11,7 @@ public interface ItemService {
     ItemDto updateItem(long userId, ItemDto itemDto, Long itemId);
 
     ItemDto getItemById(Long itemId);
+
+    ItemDto getAvailableItem(long userId, String text);
+
 }

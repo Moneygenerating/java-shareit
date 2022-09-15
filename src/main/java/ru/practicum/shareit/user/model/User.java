@@ -15,4 +15,9 @@ public class User {
     private String name;
     //Set уникальный элемент туда кладем все имеилы и ищем что это ошибка
     private String email;
+
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }
