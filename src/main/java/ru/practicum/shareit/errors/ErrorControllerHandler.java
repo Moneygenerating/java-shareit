@@ -24,6 +24,7 @@ public class ErrorControllerHandler {
     public ResponseEntity<?> catchConflictError(final ConflictErrorException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
+
     @ExceptionHandler
     public ResponseEntity<?> handleOtherException(final Throwable e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
