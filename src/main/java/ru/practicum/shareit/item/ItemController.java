@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
+@Slf4j
 public class ItemController {
 
     @Autowired
@@ -20,29 +22,34 @@ public class ItemController {
 
     @GetMapping
     public List<ItemDto> get(@RequestHeader("X-Sharer-User-Id") long userId) {
+        log.info("Запрос item get item");
         return itemService.getItems(userId);
     }
 
     @GetMapping("/{itemId}")
     public ItemDto getByItemId(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable Long itemId) {
+        log.info("Запрос item get getByItemId");
         return itemService.getItemById(itemId);
     }
 
     @GetMapping("/search")
     public List<ItemDto> getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
                                           @RequestParam String text) {
+        log.info("Запрос item get /search");
         return itemService.getAvailableItems(userId, text);
     }
 
     @PostMapping
     public ItemDto add(@RequestHeader("X-Sharer-User-Id") Long userId,
                        @Validated({Create.class}) @RequestBody ItemDto item) {
+        log.info("Запрос item post");
         return itemService.addNewItem(userId, item);
     }
 
     @DeleteMapping("/{itemId}")
     public void deleteItem(@RequestHeader("X-Sharer-User-Id") long userId,
                            @PathVariable long itemId) {
+        log.info("Запрос item delete");
         itemService.deleteItem(userId, itemId);
     }
 
@@ -50,6 +57,7 @@ public class ItemController {
     ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                        @Validated({Update.class}) @RequestBody ItemDto itemDto,
                        @PathVariable Long itemId) {
+        log.info("Запрос item update");
         return itemService.updateItem(userId, itemDto, itemId);
     }
 
