@@ -42,13 +42,13 @@ public class UserDaoImpl implements UserDao {
         //вытаскиваем юзера
         User userForUpdate = users
                 .stream()
-                .filter(user1 -> user1.getId() == userId)
+                .filter(user1 -> Objects.equals(user1.getId(), userId))
                 .collect(Collectors.toList())
                 .get(0);
 
         User userForRemove = users
                 .stream()
-                .filter(user1 -> user1.getId() == userId)
+                .filter(user1 -> Objects.equals(user1.getId(), userId))
                 .collect(Collectors.toList())
                 .get(0);
 
@@ -73,7 +73,7 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(Long userId) {
         User user1 = new User();
         for (User user : users) {
-            if (user.getId() == userId) {
+            if (Objects.equals(user.getId(), userId)) {
                 user1 = user;
             }
         }
