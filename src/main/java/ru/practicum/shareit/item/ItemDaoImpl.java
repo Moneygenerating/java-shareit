@@ -86,11 +86,11 @@ public class ItemDaoImpl implements ItemDao {
     public List<Item> getAvailableItems(long userId, String text) {
         return items
                 .stream()
-                .filter(item -> item.getName() == text
-                        || item.getDescription().contains(text)||item.getDescription().matches(text))
+                .filter(item -> item.getDescription().toLowerCase().contains(text) || item.getDescription().matches(text))
                 .peek(item -> {
-                    if (item.getName() == null) throw new NotFoundException("Такого предммета нет");
+                    if (item.getName() == null) throw new NotFoundException("Такого предмета нет");
                 })
+                .sorted(Comparator.comparing(Item::getId))
                 .collect(Collectors.toList());
     }
 }

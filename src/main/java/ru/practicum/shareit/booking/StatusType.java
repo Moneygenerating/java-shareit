@@ -12,7 +12,7 @@ public enum StatusType {
     private static final Map<Integer, StatusType> statusTypes = new HashMap<>();
 
     static {
-        for (StatusType e: values()) {
+        for (StatusType e : values()) {
             statusTypes.put(e.code, e);
         }
     }

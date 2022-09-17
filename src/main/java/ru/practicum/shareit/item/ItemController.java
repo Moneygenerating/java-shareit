@@ -10,9 +10,6 @@ import ru.practicum.shareit.service.Update;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -33,7 +30,7 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<ItemDto> getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                                    @RequestParam  String text) {
+                                          @RequestParam String text) {
         return itemService.getAvailableItems(userId, text);
     }
 
@@ -53,7 +50,7 @@ public class ItemController {
     ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
                        @Validated({Update.class}) @RequestBody ItemDto itemDto,
                        @PathVariable Long itemId) {
-        return itemService.updateItem(userId,itemDto,itemId);
+        return itemService.updateItem(userId, itemDto, itemId);
     }
 
 }

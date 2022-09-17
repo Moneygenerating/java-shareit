@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Long userId) {
         User user1 = new User();
-        for(User user : users){
+        for (User user : users) {
             if (user.getId() == userId) {
                 user1 = user;
             }
