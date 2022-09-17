@@ -4,10 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.item.model.Item;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -23,16 +20,20 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> findByUserId(long userId) {
 
-        return items
-                .stream()
-                .filter(item -> item.getOwner() == userId)
-                .collect(Collectors.toList());
+        List<Item> itemList = new ArrayList<>();
+
+        for (Item item : items) {
+            if (item.getOwner().getId() == userId) {
+                itemList.add(item);
+            }
+        }
+
+        return itemList;
     }
 
     @Override
-    public Item save(long userId, Item item) {
+    public Item create(Item item) {
         generatorId++;
-        item.setOwner(userId);
         item.setId(generatorId);
         items.add(item);
         return items.stream()
@@ -44,7 +45,7 @@ public class ItemDaoImpl implements ItemDao {
     public void deleteByUserIdAndItemId(long userId, long itemId) {
         Item itemForDelete = items
                 .stream()
-                .filter(item -> item.getOwner() == userId && item.getId() == itemId)
+                .filter(item -> item.getOwner().getId() == userId && item.getId() == itemId)
                 .collect(Collectors.toList()).get(0);
         items.remove(itemForDelete);
     }
@@ -86,7 +87,9 @@ public class ItemDaoImpl implements ItemDao {
         return items
                 .stream()
                 .filter(item -> item.getName() == text || item.getDescription().contains(text))
-                .peek(item -> { if (item == null) throw new NotFoundException("Такого предммета нет"); })
+                .peek(item -> {
+                    if (item == null) throw new NotFoundException("Такого предммета нет");
+                })
                 .collect(Collectors.toList()).get(0);
     }
 }

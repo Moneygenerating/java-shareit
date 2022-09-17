@@ -2,9 +2,12 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserDao;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +18,9 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemDao itemDao;
 
+
+    private final UserDao userDao;
+
     @Override
     public List<ItemDto> getItems(Long userId) {
 
@@ -24,8 +30,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
-        Item item = ItemMapper.toItem(itemDto, userId);
-        return ItemMapper.toItemDto(itemDao.save(userId, item));
+        User user = userDao.getUserById(userId);
+
+        if (user.getId() == null) {
+            throw new NotFoundException("Такого предмета нет");
+        }
+
+        Item item = ItemMapper.toItem(itemDto, user);
+        return ItemMapper.toItemDto(itemDao.create(item));
     }
 
     @Override
@@ -35,7 +47,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
-        Item item = ItemMapper.toItem(itemDto, userId);
+
+
+        //валидация неверно переданного пользователя
+        Item itemForValidate = itemDao.getItemById(itemId);
+
+        if (itemForValidate.getOwner().getId() != userId) {
+            throw new NotFoundException("Итем с таким пользователем не найден");
+        }
+
+        Item item = ItemMapper.toItem(itemDto, userDao.getUserById(userId));
         return ItemMapper.toItemDto(itemDao.updateItem(itemId, item));
     }
 

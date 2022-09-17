@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.user.model.User;
 
 @Data
 @AllArgsConstructor
@@ -18,11 +19,11 @@ public class Item {
     //статус о том, доступна или нет вещь для аренды
     private Boolean available;
     //владелец вещи
-    private Long owner;
+    private User owner;
     //ссылка на соответствующий запрос
     private ItemRequest request;
 
-    public Item(String name, String description, boolean available, Long owner) {
+    public Item(String name, String description, Boolean available, User owner) {
         this.name = name;
         this.description = description;
         this.available = available;

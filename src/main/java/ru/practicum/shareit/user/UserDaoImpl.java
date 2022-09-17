@@ -5,9 +5,7 @@ import ru.practicum.shareit.errors.ConflictErrorException;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -21,8 +19,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Set<User> findAll() {
-        return users;
+    public List<User> findAll() {
+        return users
+                .stream()
+                .sorted(Comparator.comparing(User::getId))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -70,15 +71,17 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long userId) {
-        return users
-                .stream()
-                .filter(user -> Objects.equals(user.getId(), userId))
-                .collect(Collectors.toList())
-                .get(0);
+        User user1 = new User();
+        for(User user : users){
+            if (user.getId() == userId) {
+                user1 = user;
+            }
+        }
+        return user1;
     }
 
     @Override
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId) {
         users.remove(getUserById(userId));
     }
 
