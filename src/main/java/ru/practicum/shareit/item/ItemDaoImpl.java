@@ -55,7 +55,7 @@ public class ItemDaoImpl implements ItemDao {
         //вытаскиваем старый итем
         Item itemForUpdate = items
                 .stream()
-                .filter(item2 -> item2.getId() == itemId)
+                .filter(item2 -> Objects.equals(item2.getId(), itemId))
                 .collect(Collectors.toList()).get(0);
         //удаляем его
         items.remove(itemForUpdate);
@@ -78,7 +78,7 @@ public class ItemDaoImpl implements ItemDao {
     public Item getItemById(Long itemId) {
         return items
                 .stream()
-                .filter(item2 -> item2.getId() == itemId)
+                .filter(item2 -> Objects.equals(item2.getId(), itemId))
                 .collect(Collectors.toList()).get(0);
     }
 
