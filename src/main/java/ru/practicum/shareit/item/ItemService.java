@@ -15,6 +15,6 @@ public interface ItemService {
 
     ItemDto getItemById(Long itemId);
 
-    List<ItemDto> getAvailableItems(long userId, String text);
+    List<ItemDto> getAvailableItems(String text);
 
 }

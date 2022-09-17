@@ -33,10 +33,9 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                                          @RequestParam String text) {
+    public List<ItemDto> getAvailableItem(@RequestParam String text) {
         log.info("Запрос item get /search");
-        return itemService.getAvailableItems(userId, text);
+        return itemService.getAvailableItems(text);
     }
 
     @PostMapping

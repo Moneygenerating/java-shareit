@@ -71,13 +71,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long userId) {
-        User user1 = new User();
-        for (User user : users) {
-            if (Objects.equals(user.getId(), userId)) {
-                user1 = user;
-            }
-        }
-        return user1;
+        return users
+                .stream()
+                .filter(user -> Objects.equals(user.getId(), userId))
+                .collect(Collectors.toList()).get(0);
     }
 
     @Override
@@ -86,7 +83,7 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    public void validateUser(User user) {
+    private void validateUser(User user) {
         if (user.getEmail() == null || user.getEmail().isBlank() || user.getEmail().isEmpty()) {
             throw new ValidationException("Отсутствует email");
         }
@@ -97,7 +94,7 @@ public class UserDaoImpl implements UserDao {
         validateEmailForDouble(user);
     }
 
-    public void validateEmailForDouble(User user) {
+    private void validateEmailForDouble(User user) {
         users.forEach(user1 -> {
             if (Objects.equals(user1.getEmail(), user.getEmail())) {
                 throw new ConflictErrorException("Подьзователь с таким email уже существует.");

@@ -29,7 +29,7 @@ public class ItemDto {
     //ссылка на соответствующий запрос
     private Long request;
 
-    public ItemDto(Long id, String name, String description, boolean available, Long itemRequest) {
+    public ItemDto(Long id, String name, String description, Boolean available, Long itemRequest) {
         this.id = id;
         this.name = name;
         this.description = description;

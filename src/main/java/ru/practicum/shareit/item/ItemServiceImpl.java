@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.errors.NotFoundException;
-import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserDao;
@@ -11,6 +10,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +31,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
-        User user = userDao.getUserById(userId);
+        boolean matchUer = userDao.findAll()
+                .stream()
+                .anyMatch(user -> Objects.equals(user.getId(), userId));
 
-        if (user.getId() == null) {
+        if (!matchUer) {
             throw new NotFoundException("Такого предмета нет");
         }
+        User user = userDao.getUserById(userId);
+
 
         Item item = ItemMapper.toItem(itemDto, user);
+
         return ItemMapper.toItemDto(itemDao.create(item));
     }
 
@@ -67,23 +72,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAvailableItems(long userId, String text) {
+    public List<ItemDto> getAvailableItems(String text) {
         if (text.isEmpty()) {
             return new ArrayList<>();
         } else {
             text = text.toLowerCase();
-            //ItemMapper.toItemDto(
-            List<ItemDto> itemDto = itemDao.getAvailableItems(userId, text)
+
+            return itemDao.getAvailableItems(text)
                     .stream()
                     .filter(Item::getAvailable)
                     .map(ItemMapper::toItemDto)
                     .collect(Collectors.toList());
-
-            if (itemDto.isEmpty()) {
-                throw new ValidationException("Доступных предметов нет");
-            } else {
-                return itemDto;
-            }
         }
     }
 }
+

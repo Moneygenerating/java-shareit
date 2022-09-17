@@ -83,7 +83,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public List<Item> getAvailableItems(long userId, String text) {
+    public List<Item> getAvailableItems(String text) {
         return items
                 .stream()
                 .filter(item -> item.getDescription().toLowerCase().contains(text) || item.getDescription().matches(text))
