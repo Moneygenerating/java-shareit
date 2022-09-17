@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.service.Create;
 
 import javax.validation.constraints.NotBlank;
@@ -28,13 +27,13 @@ public class ItemDto {
     //владелец вещи
     private Long owner;
     //ссылка на соответствующий запрос
-    private ItemRequest request;
+    private Long request;
 
-    public ItemDto(Long id, String name, String description, boolean available, Long owner) {
+    public ItemDto(Long id, String name, String description, boolean available, Long itemRequest) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.available = available;
-        this.owner = owner;
+        this.request = itemRequest;
     }
 }

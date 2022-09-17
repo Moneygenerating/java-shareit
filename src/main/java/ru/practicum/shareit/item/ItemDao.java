@@ -15,6 +15,6 @@ public interface ItemDao {
 
     Item getItemById(Long itemId);
 
-    Item getAvailableItem(long userId, String text);
+    List<Item> getAvailableItems(long userId, String text);
 
 }

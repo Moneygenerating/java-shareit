@@ -83,13 +83,14 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public Item getAvailableItem(long userId, String text) {
+    public List<Item> getAvailableItems(long userId, String text) {
         return items
                 .stream()
-                .filter(item -> item.getName() == text || item.getDescription().contains(text))
+                .filter(item -> item.getName() == text
+                        || item.getDescription().contains(text)||item.getDescription().matches(text))
                 .peek(item -> {
-                    if (item == null) throw new NotFoundException("Такого предммета нет");
+                    if (item.getName() == null) throw new NotFoundException("Такого предммета нет");
                 })
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList());
     }
 }

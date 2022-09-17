@@ -32,9 +32,9 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public ItemDto getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public List<ItemDto> getAvailableItem(@RequestHeader("X-Sharer-User-Id") long userId,
                                     @RequestParam  String text) {
-        return itemService.getAvailableItem(userId, text);
+        return itemService.getAvailableItems(userId, text);
     }
 
     @PostMapping

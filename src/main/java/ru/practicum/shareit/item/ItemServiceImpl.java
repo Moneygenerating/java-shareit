@@ -9,6 +9,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserDao;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,15 +67,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto getAvailableItem(long userId, String text) {
-        text = text.toLowerCase();
-
-        ItemDto itemDto = ItemMapper.toItemDto(itemDao.getAvailableItem(userId, text));
-
-        if (!itemDto.getAvailable()) {
-            throw new ValidationException("Предмет не доступен");
+    public List<ItemDto> getAvailableItems(long userId, String text) {
+        if (text.isEmpty()) {
+            return new ArrayList<>();
         } else {
-            return itemDto;
+            text = text.toLowerCase();
+            //ItemMapper.toItemDto(
+            List<ItemDto> itemDto = itemDao.getAvailableItems(userId, text)
+                    .stream()
+                    .filter(Item::getAvailable)
+                    .map(ItemMapper::toItemDto)
+                    .collect(Collectors.toList());
+
+            if (itemDto.isEmpty()) {
+                throw new ValidationException("Доступных предметов нет");
+            } else {
+                return itemDto;
+            }
         }
     }
 }
