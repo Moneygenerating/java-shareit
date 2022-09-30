@@ -7,18 +7,24 @@ import ru.practicum.shareit.booking.StatusType;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@StartBeforeEnd
 public class BookingDto {
     //уникальный идентификатор бронирования
     private Long id;
     //дата и время начала бронирования
-    private LocalDate start;
+    @FutureOrPresent
+    private LocalDateTime start;
     //дата и время конца бронирования
-    private LocalDate end;
+    @Future
+    private LocalDateTime end;
     //вещь, которую пользователь бронирует
     private Item item;
     //пользователь, который осуществляет бронирование
