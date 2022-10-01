@@ -9,7 +9,6 @@ import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
