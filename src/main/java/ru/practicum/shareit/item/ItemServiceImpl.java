@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserDao;
+import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemDao itemDao;
 
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Override
     public List<ItemDto> getItems(Long userId) {
@@ -31,14 +31,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
-        boolean matchUer = userDao.findAll()
+        boolean matchUer = userRepository.findAll()
                 .stream()
                 .anyMatch(user -> Objects.equals(user.getId(), userId));
 
         if (!matchUer) {
             throw new NotFoundException("Такого предмета нет");
         }
-        User user = userDao.getUserById(userId);
+        User user = userRepository.getReferenceById(userId);
 
 
         Item item = ItemMapper.toItem(itemDto, user);
@@ -62,7 +62,7 @@ public class ItemServiceImpl implements ItemService {
             throw new NotFoundException("Итем с таким пользователем не найден");
         }
 
-        Item item = ItemMapper.toItem(itemDto, userDao.getUserById(userId));
+        Item item = ItemMapper.toItem(itemDto, userRepository.getReferenceById(userId));
         return ItemMapper.toItemDto(itemDao.updateItem(itemId, item));
     }
 

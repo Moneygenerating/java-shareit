@@ -3,8 +3,11 @@ package ru.practicum.shareit.errors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.persistence.EntityNotFoundException;
 
 @ControllerAdvice
 @Slf4j
@@ -27,7 +30,23 @@ public class ErrorControllerHandler {
 
     @ExceptionHandler
     public ResponseEntity<?> handleOtherException(final Throwable e) {
+        e.printStackTrace();
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleValidException(final MethodArgumentNotValidException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleArgumentConstraintException(final org.hibernate.exception.ConstraintViolationException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleEntityNotFound(final EntityNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
 
