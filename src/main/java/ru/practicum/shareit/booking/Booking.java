@@ -3,11 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "bookings")
@@ -19,21 +15,21 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //вещь, которую пользователь бронирует
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
     //дата и время начала бронирования
-    @Column(name = "start_date_time")
+    @Column(name = "start_date_time", nullable = false)
     private LocalDateTime start;
     //дата и время конца бронирования
-    @Column(name = "end_date_time")
+    @Column(name = "end_date_time", nullable = false)
     private LocalDateTime end;
-    //вещь, которую пользователь бронирует
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "items")
-    private Item item;
-    //пользователь, который осуществляет бронирование
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "users")
-    private User booker;
     //статус бронирования
-    @Enumerated
-    private StatusType status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private BookingState status;
+    //пользователь, который осуществляет бронирование
+    @Column(name = "booker_id")
+    private Long bookerId;
+
 }

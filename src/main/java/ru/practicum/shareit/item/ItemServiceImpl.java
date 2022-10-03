@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(ItemMapper::toItemInfoDto)
                 .map(itemInfoDto -> {
                     if(itemInfoDto.getOwner().equals(userId)) {
-                        setLastAndNextBooking(itemInfoDto, itemInfoDto.getId());
+                        setLastAndNextBooking(itemInfoDto);
                     }
                     return itemInfoDto;
                 })
@@ -108,7 +108,7 @@ public class ItemServiceImpl implements ItemService {
                     }).collect(Collectors.toList()));
 
             if (itemInfoDto.getOwner().equals(userId)) {
-                setLastAndNextBooking(itemInfoDto, itemId);
+                setLastAndNextBooking(itemInfoDto);
             }
             return itemInfoDto;
         } catch (Exception e) {
@@ -135,8 +135,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
         if (!commentDto.getText().isBlank() &&
-                bookingRepository.existsBookingByBookerIdAndItemIdAndStatusAndStartBefore(
-                        userId, itemId, BookingState.APPROVED, LocalDateTime.now())) {
+                bookingRepository.isBookingExists(userId, itemId, BookingState.APPROVED)) {
             User user = userRepository.getReferenceById(userId);
             Item item = itemRepository.getReferenceById(itemId);
             Comment comment = CommentMapper.dtoToComment(commentDto, item, user, LocalDateTime.now());
@@ -158,28 +157,30 @@ public class ItemServiceImpl implements ItemService {
         return true;
     }
 
-    private void setLastAndNextBooking(ItemInfoDto itemInfoDto, Long itemId) {
+    private void setLastAndNextBooking(ItemInfoDto itemInfoDto) {
         try {
             //setLastBooking
             Booking lastBooking = bookingRepository
-                    .findFirstByItemIdAndStatusAndEndIsBeforeOrderByStartDesc(itemId,
-                            BookingState.APPROVED, LocalDateTime.now());
+                    .getBookingLast(itemInfoDto.getId());
 
-            ItemInfoDto.BookingDto lastBookingDto = new ItemInfoDto.BookingDto();
-            lastBookingDto.setId(lastBooking.getId());
-            lastBookingDto.setBookerId(lastBooking.getBooker().getId());
-            itemInfoDto.setLastBooking(lastBookingDto);
-
+            if (lastBooking != null) {
+                ItemInfoDto.BookingDto lastBookingDto = new ItemInfoDto.BookingDto();
+                lastBookingDto.setId(lastBooking.getId());
+                lastBookingDto.setBookerId(lastBooking.getBookerId());
+                itemInfoDto.setLastBooking(lastBookingDto);
+            }
             //setNextBooking
             Booking nextBooking = bookingRepository
-                    .findFirstByItemIdAndStatusAndStartIsAfterOrderByStartDesc(itemId,
-                            BookingState.APPROVED, LocalDateTime.now());
+                    .getBookingNext(itemInfoDto.getId());
 
-            ItemInfoDto.BookingDto nextBookingDto = new ItemInfoDto.BookingDto();
-            nextBookingDto.setId(nextBooking.getId());
-            nextBookingDto.setBookerId(nextBooking.getBooker().getId());
-            itemInfoDto.setNextBooking(nextBookingDto);
+            if(nextBooking !=null) {
+                ItemInfoDto.BookingDto nextBookingDto = new ItemInfoDto.BookingDto();
+                nextBookingDto.setId(nextBooking.getId());
+                nextBookingDto.setBookerId(nextBooking.getBookerId());
+                itemInfoDto.setNextBooking(nextBookingDto);
+            }
         } catch (Exception e) {
+            return;
         }
     }
 }
