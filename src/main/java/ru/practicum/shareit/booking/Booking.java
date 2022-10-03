@@ -26,14 +26,14 @@ public class Booking {
     @Column(name = "end_date_time")
     private LocalDateTime end;
     //вещь, которую пользователь бронирует
-    @OneToOne
-    //@Column(name = "item_id")
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "items")
     private Item item;
     //пользователь, который осуществляет бронирование
-    @OneToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "users")
     private User booker;
     //статус бронирования
+    @Enumerated
     private StatusType status;
 }

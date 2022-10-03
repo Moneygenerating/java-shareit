@@ -32,8 +32,7 @@ public class Item {
     @JoinColumn (name="users")
     private User owner;
     //ссылка на соответствующий запрос
-    //@Column(name = "request_id")
-    @OneToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "item_requests")
     private ItemRequest request;
 
