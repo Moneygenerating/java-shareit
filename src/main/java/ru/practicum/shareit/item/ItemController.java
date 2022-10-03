@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.service.Create;
 import ru.practicum.shareit.service.Update;
 
@@ -21,21 +23,21 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping
-    public List<ItemDto> get(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId) {
         log.info("Запрос item get item");
         return itemService.getItems(userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getByItemId(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable Long itemId) {
+    public ItemInfoDto getByItemId(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable Long itemId) {
         log.info("Запрос item get getByItemId");
-        return itemService.getItemById(itemId);
+        return itemService.getItemById(itemId, userId);
     }
 
     @GetMapping("/search")
     public List<ItemDto> getAvailableItem(@RequestParam String text) {
         log.info("Запрос item get /search");
-        return itemService.getAvailableItems(text);
+        return itemService.getAvailableItems(text.toLowerCase());
     }
 
     @PostMapping
@@ -60,4 +62,12 @@ public class ItemController {
         return itemService.updateItem(userId, itemDto, itemId);
     }
 
+    @PostMapping("/{itemId}/comment")
+    public CommentDto saveComment(
+            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @PathVariable("itemId") Long itemId,
+            @RequestBody CommentDto commentDto
+    ) {
+        return itemService.addComment(userId, itemId, commentDto);
+    }
 }
