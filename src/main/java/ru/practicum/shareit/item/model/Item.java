@@ -27,12 +27,14 @@ public class Item {
     //статус о том, доступна или нет вещь для аренды
     private Boolean available;
     //владелец вещи
-    @Column(name = "name_id", unique = true, nullable = false)
-    @ManyToOne()
+    //@Column(name = "name_id", unique = true, nullable = false)
+    @ManyToOne (cascade=CascadeType.ALL)
+    @JoinColumn (name="users")
     private User owner;
     //ссылка на соответствующий запрос
-    @Column(name = "request_id")
+    //@Column(name = "request_id")
     @OneToOne
+    @JoinColumn(name = "item_requests")
     private ItemRequest request;
 
     public Item(String name, String description, Boolean available, User owner) {

@@ -23,12 +23,14 @@ public class Comment {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "item_id", nullable = false)
-    @ManyToOne
+    //@Column(name = "item_id", nullable = false)
+    @ManyToOne(optional = false, cascade=CascadeType.ALL)
+    @JoinColumn(name = "items")
     private Item item;
 
-    @Column(name = "author_id", nullable = false)
-    @ManyToOne
+    //@Column(name = "author_id", nullable = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "users")
     private User user;
 
     @Column(name = "created", nullable = false)
