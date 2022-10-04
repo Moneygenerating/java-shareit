@@ -10,6 +10,7 @@ import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -96,22 +97,14 @@ public class BookingServiceImpl implements BookingService {
             default:
                 bookings = bookingRepository.findBookerAllByStatus(userId, bookingStatus);
         }
-        List<BookingDto> bookingDtos = bookings.stream().map(booking -> {
-            BookingDto bookingDto = BookingMapper.bookingToDto(booking);
-            bookingDto.setBooker(BookingMapper.userToBookingNewDto(userRepository.getReferenceById(booking.getBookerId())));
-            bookingDto.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
-            return bookingDto;
-        }).collect(Collectors.toList());
-
-        if (bookingDtos.size() > 0) {
-            return bookingDtos;
-        }
-        throw new NotFoundException("не удалось найти список бронирований");
+        return getBookingDtoList(bookings);
     }
 
     @Override
     public List<BookingDto> getOwnerAllBookings(Long userId, String status) {
-        List<Long> idsList = itemRepository.findAllByOwner(userId).stream().map(Item::getId).collect(Collectors.toList());
+        List<Long> idsList = itemRepository
+                .findAllByOwner(userRepository.getReferenceById(userId))
+                .stream().map(Item::getId).collect(Collectors.toList());
         List<Booking> bookings;
 
         LocalDateTime dt = LocalDateTime.now();
@@ -132,15 +125,19 @@ public class BookingServiceImpl implements BookingService {
             default:
                 bookings = bookingRepository.findItemsByStatus(idsList, bookingStatus);
         }
-        List<BookingDto> bookingDtos = bookings.stream().map(booking -> {
+        return getBookingDtoList(bookings);
+    }
+
+    private List<BookingDto> getBookingDtoList(List<Booking> bookings) {
+        List<BookingDto> bookingDtoList = bookings.stream().map(booking -> {
             BookingDto bookingDto = BookingMapper.bookingToDto(booking);
             bookingDto.setBooker(BookingMapper.userToBookingNewDto(userRepository.getReferenceById(booking.getBookerId())));
             bookingDto.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
             return bookingDto;
         }).collect(Collectors.toList());
 
-        if (bookingDtos.size() > 0) {
-            return bookingDtos;
+        if (bookingDtoList.size() > 0) {
+            return bookingDtoList;
         }
 
         throw new NotFoundException("не удалось найти список бронирований");
