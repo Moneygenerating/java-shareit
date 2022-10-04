@@ -50,17 +50,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
-        /*
-        boolean matchUer = userRepository.findAll()
-                .stream()
-                .anyMatch(user -> Objects.equals(user.getId(), userId));
-
-        if (!matchUer) {
-            throw new NotFoundException("Пользователи с таким id не найдены. Ошибка добавления предмета");
-        }
-
-         */
-
 
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("Пользователи с таким id не найдены. Ошибка добавления предмета");

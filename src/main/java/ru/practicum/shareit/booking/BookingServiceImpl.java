@@ -96,19 +96,15 @@ public class BookingServiceImpl implements BookingService {
             default:
                 bookings = bookingRepository.findBookerAllByStatus(userId, bookingStatus);
         }
-        return getBookingDtoList(bookings);
-    }
-
-    private List<BookingDto> getBookingDtoList(List<Booking> bookings) {
-        List<BookingDto> bookingDtoList = bookings.stream().map(booking -> {
+        List<BookingDto> bookingDtos = bookings.stream().map(booking -> {
             BookingDto bookingDto = BookingMapper.bookingToDto(booking);
             bookingDto.setBooker(BookingMapper.userToBookingNewDto(userRepository.getReferenceById(booking.getBookerId())));
             bookingDto.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
             return bookingDto;
         }).collect(Collectors.toList());
 
-        if (bookingDtoList.size() > 0) {
-            return bookingDtoList;
+        if (bookingDtos.size() > 0) {
+            return bookingDtos;
         }
         throw new NotFoundException("не удалось найти список бронирований");
     }
@@ -136,8 +132,18 @@ public class BookingServiceImpl implements BookingService {
             default:
                 bookings = bookingRepository.findItemsByStatus(idsList, bookingStatus);
         }
+        List<BookingDto> bookingDtos = bookings.stream().map(booking -> {
+            BookingDto bookingDto = BookingMapper.bookingToDto(booking);
+            bookingDto.setBooker(BookingMapper.userToBookingNewDto(userRepository.getReferenceById(booking.getBookerId())));
+            bookingDto.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
+            return bookingDto;
+        }).collect(Collectors.toList());
 
-        return getBookingDtoList(bookings);
+        if (bookingDtos.size() > 0) {
+            return bookingDtos;
+        }
+
+        throw new NotFoundException("не удалось найти список бронирований");
     }
 
     @Override
@@ -172,15 +178,6 @@ public class BookingServiceImpl implements BookingService {
         if (!itemRepository.getReferenceById(bookingDto.getItemId()).getAvailable()) {
             throw new ValidationException("предмет нельзя забронировать");
         }
-        /*
-        toDO разобраться с валидацией, протестировать
-        if (bookingDto.getEnd().isBefore(LocalDateTime.now()) ||
-                bookingDto.getStart().isBefore(LocalDateTime.now()) ||
-                bookingDto.getEnd().isBefore(bookingDto.getStart())) {
-            throw new ValidationException("время окончания бронирования не может быть раньше времени начала");
-        }
-
-         */
         return true;
     }
 }

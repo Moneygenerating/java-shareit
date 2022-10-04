@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.service.Create;
 
 import java.util.List;
@@ -45,15 +46,14 @@ public class BookingController {
     public List<BookingDto> getAllBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state) {
-        /*
-        log.info("getBookings");
+
+        log.info("getAllBookings");
         BookingState stateParam = BookingState.from(state);
-        if (state ==null ) {
-            //Todo Разобраться с ошибой responseError ккаую правильно воткнуть и прописать ее в хендлере
-            throw new IllegalArgumentException("Unknown state: " + stateParam);
+        if (stateParam ==null ) {
+            throw new ValidationException("Unknown state: " + state);
+
         }
 
-         */
         return bookingService.getAllBookings(userId, state);
     }
 
@@ -61,6 +61,13 @@ public class BookingController {
     public List<BookingDto> getOwnerAllBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state) {
+
+        log.info("getOwnerAllBookings");
+        BookingState stateParam = BookingState.from(state);
+        if (stateParam ==null ) {
+            throw new ValidationException("Unknown state: " + state);
+
+        }
         return bookingService.getOwnerAllBookings(userId, state);
     }
 }

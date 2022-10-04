@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 @Slf4j
@@ -20,7 +22,10 @@ public class ErrorControllerHandler {
 
     @ExceptionHandler
     public ResponseEntity<?> catchValidationException(final ValidationException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        log.error(e.getMessage());
+        Map<String, Object> map = new HashMap<>();
+        map.put("error", e.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
@@ -40,7 +45,8 @@ public class ErrorControllerHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handleArgumentConstraintException(final org.hibernate.exception.ConstraintViolationException e) {
+    public ResponseEntity<?> handleArgumentConstraintException
+            (final org.hibernate.exception.ConstraintViolationException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
