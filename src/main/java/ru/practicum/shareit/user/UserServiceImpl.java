@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
                 validateUser(userDto);
                 userDtoCheck.setEmail(userDto.getEmail());
             }
-            //todo вконце исправить говнокод занести в сам дто создание с id чтобы через сеттеры не задавать
+
             User user = UserMapper.toUser(userDtoCheck);
             user.setId(userDtoCheck.getId());
             userRepository.save(user);

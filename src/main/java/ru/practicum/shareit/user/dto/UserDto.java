@@ -13,7 +13,6 @@ public class UserDto {
     private Long id;
     //имя или логин пользователя
     private String name;
-    //email TODO
     @NotNull(groups = {Create.class})
     private String email;
 
