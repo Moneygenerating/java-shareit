@@ -28,12 +28,4 @@ public class ItemDto {
     private Long owner;
     //ссылка на соответствующий запрос
     private Long request;
-
-    public ItemDto(Long id, String name, String description, Boolean available, Long itemRequest) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.request = itemRequest;
-    }
 }

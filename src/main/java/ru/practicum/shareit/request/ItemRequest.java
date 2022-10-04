@@ -22,7 +22,7 @@ public class ItemRequest {
     //текст запроса, содержащий описание требуемой вещи
     private String description;
     //пользователь, создавший запрос
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "users")
     private User requester;
     //дата и время создания запроса

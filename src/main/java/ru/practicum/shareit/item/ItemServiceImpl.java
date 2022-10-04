@@ -41,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
                 .filter(item -> item.getOwner().getId().equals(userId))
                 .map(ItemMapper::toItemInfoDto)
                 .map(itemInfoDto -> {
-                    if(itemInfoDto.getOwner().equals(userId)) {
+                    if (itemInfoDto.getOwner().equals(userId)) {
                         setLastAndNextBooking(itemInfoDto);
                     }
                     return itemInfoDto;
@@ -51,11 +51,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
+        /*
         boolean matchUer = userRepository.findAll()
                 .stream()
                 .anyMatch(user -> Objects.equals(user.getId(), userId));
 
         if (!matchUer) {
+            throw new NotFoundException("Пользователи с таким id не найдены. Ошибка добавления предмета");
+        }
+
+         */
+
+
+        if (!userRepository.existsById(userId)) {
             throw new NotFoundException("Пользователи с таким id не найдены. Ошибка добавления предмета");
         }
 
@@ -173,7 +181,7 @@ public class ItemServiceImpl implements ItemService {
             Booking nextBooking = bookingRepository
                     .getBookingNext(itemInfoDto.getId());
 
-            if(nextBooking !=null) {
+            if (nextBooking != null) {
                 ItemInfoDto.BookingDto nextBookingDto = new ItemInfoDto.BookingDto();
                 nextBookingDto.setId(nextBooking.getId());
                 nextBookingDto.setBookerId(nextBooking.getBookerId());

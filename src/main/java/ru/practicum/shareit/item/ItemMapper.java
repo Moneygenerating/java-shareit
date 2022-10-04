@@ -13,12 +13,14 @@ public class ItemMapper {
                 item.getName(),
                 item.getDescription(),
                 item.getAvailable(),
+                item.getOwner() != null ? item.getOwner().getId() : null,
                 item.getRequest() != null ? item.getRequest().getId() : null
         );
     }
 
     public static Item toItem(ItemDto itemDto, User owner) {
         return new Item(
+                itemDto.getId(),
                 itemDto.getName(),
                 itemDto.getDescription(),
                 itemDto.getAvailable(),
