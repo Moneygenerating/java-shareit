@@ -25,12 +25,12 @@ public class Comment {
 
     //@Column(name = "item_id", nullable = false)
     @ManyToOne(optional = false, cascade=CascadeType.ALL)
-    @JoinColumn(name = "items")
+    @JoinColumn(name = "item_id")
     private Item item;
 
     //@Column(name = "author_id", nullable = false)
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "author_id")
     private User user;
 
     @Column(name = "created", nullable = false)

@@ -23,7 +23,7 @@ public class ItemRequest {
     private String description;
     //пользователь, создавший запрос
     @ManyToOne
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "requester_id")
     private User requester;
     //дата и время создания запроса
     private LocalDateTime created;

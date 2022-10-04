@@ -18,7 +18,6 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,8 +82,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
 
-
-        //валидация неверно переданного пользователя
         Item itemForUpdate = itemRepository.getReferenceById(itemId);
 
         if (itemForUpdate.getOwner().getId() != userId) {

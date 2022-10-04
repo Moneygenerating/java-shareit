@@ -3,6 +3,8 @@ package ru.practicum.shareit.booking.dto;
 import lombok.*;
 import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.service.Create;
+
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDateTime;
@@ -11,16 +13,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@StartBeforeEnd
+@BookingTimeValidation(start = "start", end = "end", groups = {Create.class})
 public class BookingDto {
     //уникальный идентификатор бронирования
     private Long id;
     private Long itemId;
     //дата и время начала бронирования
-    @FutureOrPresent
+    @FutureOrPresent(groups = {Create.class})
     private LocalDateTime start;
     //дата и время конца бронирования
-    @Future
+    @Future(groups = {Create.class})
     private LocalDateTime end;
     //статус бронирования
     private BookingState status;
