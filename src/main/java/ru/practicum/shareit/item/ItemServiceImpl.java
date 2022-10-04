@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
-
     private final ItemRepository itemRepository;
 
     private final CommentRepository commentRepository;
@@ -34,16 +33,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemInfoDto> getItems(Long userId) {
-        // todo Написать отдельный запрос чтобы упросить метод
-        //findAllByUserId
+
         return itemRepository.findAll().stream()
                 .filter(item -> item.getOwner().getId().equals(userId))
                 .map(ItemMapper::toItemInfoDto)
-                .map(itemInfoDto -> {
+                .peek(itemInfoDto -> {
                     if (itemInfoDto.getOwner().equals(userId)) {
                         setLastAndNextBooking(itemInfoDto);
                     }
-                    return itemInfoDto;
                 })
                 .collect(Collectors.toList());
     }

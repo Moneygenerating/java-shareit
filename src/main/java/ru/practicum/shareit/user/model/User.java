@@ -19,10 +19,10 @@ public class User {
     @Column(name = "id")
     private Long id;
     //имя или логин пользователя
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
     //Set уникальный элемент туда кладем все имеилы и ищем что это ошибка
-    @Column(name = "email",nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     public User(String name, String email) {

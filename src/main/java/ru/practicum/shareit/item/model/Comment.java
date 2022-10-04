@@ -24,7 +24,7 @@ public class Comment {
     private String text;
 
     //@Column(name = "item_id", nullable = false)
-    @ManyToOne(optional = false, cascade=CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
     private Item item;
 

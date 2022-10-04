@@ -10,9 +10,6 @@ import ru.practicum.shareit.service.Create;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-bookings.
- */
 @RestController
 @RequestMapping(path = "/bookings")
 @Slf4j
@@ -49,11 +46,9 @@ public class BookingController {
 
         log.info("getAllBookings");
         BookingState stateParam = BookingState.from(state);
-        if (stateParam ==null ) {
+        if (stateParam == null) {
             throw new ValidationException("Unknown state: " + state);
-
         }
-
         return bookingService.getAllBookings(userId, state);
     }
 
@@ -64,9 +59,8 @@ public class BookingController {
 
         log.info("getOwnerAllBookings");
         BookingState stateParam = BookingState.from(state);
-        if (stateParam ==null ) {
+        if (stateParam == null) {
             throw new ValidationException("Unknown state: " + state);
-
         }
         return bookingService.getOwnerAllBookings(userId, state);
     }

@@ -53,7 +53,7 @@ public class BookingMapper {
         );
     }
 
-    public static BookingDto.UserNewDto  userToBookingNewDto(User user) {
+    public static BookingDto.UserNewDto userToBookingNewDto(User user) {
         return new BookingDto.UserNewDto(
                 user.getId(),
                 user.getName(),

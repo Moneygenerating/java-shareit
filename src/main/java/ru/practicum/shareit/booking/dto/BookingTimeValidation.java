@@ -8,9 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 @Constraint(validatedBy = StartBeforeEndValidator.class)
 public @interface BookingTimeValidation {
     String message() default "{end} должен быть позже, чем {start}";
+
     String start();
+
     String end();
+
     Class[] groups() default {};
+
     Class[] payload() default {};
 }
 

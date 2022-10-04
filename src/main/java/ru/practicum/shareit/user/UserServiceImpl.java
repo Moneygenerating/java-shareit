@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto createUser(UserDto userDto) {
-        if(validateUser(userDto)) {
+        if (validateUser(userDto)) {
             User user = UserMapper.toUser(userDto); //id=null исправление
             return UserMapper.toUserDto(userRepository.save(user));
         }
@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateUser(Long userId, UserDto userDto) {
         UserDto userDtoCheck = getUserById(userId);
-        if(userDtoCheck != null) {
-            if(userDto.getName()!=null){
+        if (userDtoCheck != null) {
+            if (userDto.getName() != null) {
                 userDtoCheck.setName(userDto.getName());
             }
-            if(userDto.getEmail()!=null){
+            if (userDto.getEmail() != null) {
                 validateUser(userDto);
                 userDtoCheck.setEmail(userDto.getEmail());
             }
@@ -75,7 +75,6 @@ public class UserServiceImpl implements UserService {
         if (!userDto.getEmail().endsWith(".com") || !userDto.getEmail().contains("@")) {
             throw new ValidationException("Передан неверный email");
         }
-
         return true;
     }
 

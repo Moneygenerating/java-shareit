@@ -13,6 +13,7 @@ public enum BookingState {
     REJECTED,
     //Ожидающие подтверждения
     WAITING,
+    //Подтверждено
     APPROVED;
 
     static BookingState from(String state) {
