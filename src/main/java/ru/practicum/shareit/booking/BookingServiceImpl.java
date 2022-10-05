@@ -39,6 +39,7 @@ public class BookingServiceImpl implements BookingService {
         }
         throw new ValidationException("не удалось сохранить бронирование");
     }
+
     @Transactional
     @Override
     public BookingDto approveBooking(Long userId, Long bookingId, Boolean isApproved) {
