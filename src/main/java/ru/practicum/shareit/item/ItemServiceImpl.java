@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.BookingState;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
@@ -45,6 +47,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
 
@@ -59,12 +62,12 @@ public class ItemServiceImpl implements ItemService {
         }
         return null;
     }
-
+    @Transactional
     @Override
     public void deleteItem(Long userId, Long itemId) {
         itemRepository.deleteByIdAndOwnerId(itemId, userId);
     }
-
+    @Transactional
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
 
@@ -122,7 +125,7 @@ public class ItemServiceImpl implements ItemService {
                     .collect(Collectors.toList());
         }
     }
-
+    @Transactional
     @Override
     public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
         if (!commentDto.getText().isBlank() &&

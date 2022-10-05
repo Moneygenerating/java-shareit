@@ -17,13 +17,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public BookingDto save(BookingDto bookingDto, Long userId) {
         if (checkUserExist(userId) && isBookingFieldsExists(bookingDto)) {
@@ -38,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
         }
         throw new ValidationException("не удалось сохранить бронирование");
     }
-
+    @Transactional
     @Override
     public BookingDto approveBooking(Long userId, Long bookingId, Boolean isApproved) {
         Booking booking = bookingRepository.getReferenceById(bookingId);
