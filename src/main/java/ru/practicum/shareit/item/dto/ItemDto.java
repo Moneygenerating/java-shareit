@@ -25,7 +25,7 @@ public class ItemDto {
     @NotNull(groups = {Create.class})
     private Boolean available;
     //владелец вещи
-    private Long owner;
+    private Long ownerId;
     //ссылка на соответствующий запрос
-    private Long request;
+    private Long requestId;
 }

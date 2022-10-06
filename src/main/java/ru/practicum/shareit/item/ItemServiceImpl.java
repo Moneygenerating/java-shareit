@@ -177,7 +177,7 @@ public class ItemServiceImpl implements ItemService {
                 itemInfoDto.setNextBooking(nextBookingDto);
             }
         } catch (Exception e) {
-            return;
+            throw new ValidationException("Ошибка бронирования");
         }
     }
 }
