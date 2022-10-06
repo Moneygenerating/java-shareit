@@ -3,25 +3,35 @@ package ru.practicum.shareit.booking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "bookings")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Booking {
     //уникальный идентификатор бронирования
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //дата и время начала бронирования
-    private LocalDate start;
-    //дата и время конца бронирования
-    private LocalDate end;
     //вещь, которую пользователь бронирует
-    private Item item;
-    //пользователь, который осуществляет бронирование
-    private User booker;
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
+    //дата и время начала бронирования
+    @Column(name = "start_date_time", nullable = false)
+    private LocalDateTime start;
+    //дата и время конца бронирования
+    @Column(name = "end_date_time", nullable = false)
+    private LocalDateTime end;
     //статус бронирования
-    private StatusType status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private BookingState status;
+    //пользователь, который осуществляет бронирование
+    @Column(name = "booker_id")
+    private Long bookerId;
+
 }

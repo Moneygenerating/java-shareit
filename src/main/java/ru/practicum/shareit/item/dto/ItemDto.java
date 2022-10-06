@@ -1,16 +1,16 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.practicum.shareit.service.Create;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ItemDto {
     //уникальный идентификатор вещи
 
@@ -25,15 +25,7 @@ public class ItemDto {
     @NotNull(groups = {Create.class})
     private Boolean available;
     //владелец вещи
-    private Long owner;
+    private Long ownerId;
     //ссылка на соответствующий запрос
-    private Long request;
-
-    public ItemDto(Long id, String name, String description, Boolean available, Long itemRequest) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.available = available;
-        this.request = itemRequest;
-    }
+    private Long requestId;
 }

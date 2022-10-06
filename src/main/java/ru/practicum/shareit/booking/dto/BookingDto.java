@@ -1,28 +1,58 @@
 package ru.practicum.shareit.booking.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.practicum.shareit.booking.StatusType;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
+import lombok.*;
+import ru.practicum.shareit.booking.BookingState;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.service.Create;
 
-import java.time.LocalDate;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.FutureOrPresent;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@BookingTimeValidation(start = "start", end = "end", groups = {Create.class})
 public class BookingDto {
     //уникальный идентификатор бронирования
     private Long id;
+    private Long itemId;
     //дата и время начала бронирования
-    private LocalDate start;
+    @FutureOrPresent(groups = {Create.class})
+    private LocalDateTime start;
     //дата и время конца бронирования
-    private LocalDate end;
-    //вещь, которую пользователь бронирует
-    private Item item;
-    //пользователь, который осуществляет бронирование
-    private User booker;
+    @Future(groups = {Create.class})
+    private LocalDateTime end;
     //статус бронирования
-    private StatusType status;
+    private BookingState status;
+    //пользователь, который осуществляет бронирование
+    private UserNewDto booker;
+    //вещь, которую пользователь бронирует
+    private ItemNewDto item;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ItemNewDto {
+        private Long id;
+        private String name;
+        private String description;
+        private Boolean available;
+        private Long owner;
+        private BookingShortDto lastBooking;
+        private BookingShortDto nextBooking;
+        private List<CommentDto> comments;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserNewDto {
+        private Long id;
+        private String name;
+        private String email;
+    }
 }

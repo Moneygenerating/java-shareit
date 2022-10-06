@@ -5,10 +5,7 @@ import ru.practicum.shareit.service.Create;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@ToString
-//@EqualsAndHashCode(of = "email")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -16,7 +13,6 @@ public class UserDto {
     private Long id;
     //имя или логин пользователя
     private String name;
-    //email
     @NotNull(groups = {Create.class})
     private String email;
 
