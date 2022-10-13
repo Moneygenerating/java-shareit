@@ -25,7 +25,7 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public BookingDto save(BookingDto bookingDto, Long userId) {
         if (checkUserExist(userId) && isBookingFieldsExists(bookingDto)) {
@@ -41,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
         throw new ValidationException("не удалось сохранить бронирование");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public BookingDto approveBooking(Long userId, Long bookingId, Boolean isApproved) {
         Booking booking = bookingRepository.getReferenceById(bookingId);

@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
 
@@ -75,13 +75,13 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteItem(Long userId, Long itemId) {
         itemRepository.deleteByIdAndOwnerId(itemId, userId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
 
@@ -140,7 +140,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
         if (!commentDto.getText().isBlank() &&

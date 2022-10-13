@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public UserDto createUser(UserDto userDto) {
         if (validateUser(userDto)) {
             User user = UserMapper.toUser(userDto); //id=null исправление
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public UserDto updateUser(Long userId, UserDto userDto) {
         UserDto userDtoCheck = getUserById(userId);
         if (userDtoCheck != null) {
@@ -60,12 +60,11 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDto(userRepository.getReferenceById(userId));
     }
 
-    @Transactional
     @Override
+    @Transactional(rollbackFor = {Exception.class})
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
-
 
     private boolean validateUser(UserDto userDto) {
         if (userDto.getEmail() == null || userDto.getEmail().isBlank() || userDto.getEmail().isEmpty()) {
