@@ -55,7 +55,8 @@ public class BookingController {
         if (stateParam == null) {
             throw new ValidationException("Unknown state: " + state);
         }
-        return bookingService.getAllBookings(userId, state, PageRequest.of(from / size, size, Sort.Direction.DESC, "start"));
+        return bookingService.getAllBookings(userId, state,
+                PageRequest.of(from / size, size, Sort.Direction.DESC, "start"));
     }
 
     @GetMapping("/owner")
