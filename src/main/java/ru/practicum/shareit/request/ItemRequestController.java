@@ -1,10 +1,10 @@
 package ru.practicum.shareit.request;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/requests")
-@RequiredArgsConstructor
+@Validated
 @Slf4j
 public class ItemRequestController {
 
@@ -23,8 +23,8 @@ public class ItemRequestController {
 
     //получить список своих запросов вместе с данными об ответах на них
     @GetMapping
-    public List<ItemRequestDto> getUserRequests(@RequestHeader("X-Sharer-User-Id") long userId) {
-        log.info("getAllItemRequests");
+    public List<ItemRequestDto> getUserRequests(@RequestHeader("X-Sharer-User-Id") Long userId) {
+        log.info("getUserRequests");
         return itemRequestService.getUserRequests(userId);
     }
 
@@ -51,9 +51,9 @@ public class ItemRequestController {
 
     // получить данные об одном конкретном запросе вместе с данными об ответах на него в том же формате,
     // что и в эндпоинте
-    @GetMapping
+    @GetMapping("/{requestId}")
     public ItemRequestDto getRequestById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                         @RequestParam("requestId") Long requestId) {
+                                         @PathVariable("requestId") Long requestId) {
 
         log.info("getRequestById");
         return itemRequestService.getRequestById(userId, requestId);

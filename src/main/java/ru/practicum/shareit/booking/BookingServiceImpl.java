@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -78,13 +79,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllBookings(Long userId, String status) {
+    public List<BookingDto> getAllBookings(Long userId, String status, Pageable pageable) {
         List<Booking> bookings;
         BookingState bookingStatus = parseStatus(status);
         LocalDateTime dt = LocalDateTime.now();
         switch (bookingStatus) {
             case ALL:
-                bookings = bookingRepository.findAllByBookerIdOrderByStartDesc(userId);
+                bookings = bookingRepository.findAllByBookerId(userId, pageable)
+                        .stream().collect(Collectors.toList());
                 break;
             case PAST:
                 bookings = bookingRepository.findBookerAllByPast(userId, dt);
@@ -102,7 +104,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getOwnerAllBookings(Long userId, String status) {
+    public List<BookingDto> getOwnerAllBookings(Long userId, String status, Pageable pageable) {
         List<Long> idsList = itemRepository
                 .findAllByOwner(userRepository.getReferenceById(userId))
                 .stream().map(Item::getId).collect(Collectors.toList());
@@ -112,7 +114,8 @@ public class BookingServiceImpl implements BookingService {
         BookingState bookingStatus = parseStatus(status);
         switch (bookingStatus) {
             case ALL:
-                bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(idsList);
+                bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(idsList, pageable)
+                        .stream().collect(Collectors.toList());
                 break;
             case PAST:
                 bookings = bookingRepository.findItemsInThePast(idsList, dt);
