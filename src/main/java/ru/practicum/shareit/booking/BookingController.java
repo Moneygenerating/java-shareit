@@ -48,7 +48,7 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
             @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
-            @RequestParam(value = "size", required = false, defaultValue = "50") Integer size) {
+            @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 
         log.info("getAllBookings");
         BookingState stateParam = BookingState.from(state);
@@ -64,7 +64,7 @@ public class BookingController {
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
             @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
-            @RequestParam(value = "size", required = false, defaultValue = "50") Integer size) {
+            @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 
         log.info("getOwnerAllBookings");
         BookingState stateParam = BookingState.from(state);

@@ -42,7 +42,7 @@ public class ItemRequestController {
     public List<ItemRequestDto> getOtherAllRequests(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero int from,
-            @RequestParam(value = "size", required = false, defaultValue = "50") int size) {
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         log.info("getOtherAllRequests");
         return itemRequestService.getOtherAllRequests(userId,

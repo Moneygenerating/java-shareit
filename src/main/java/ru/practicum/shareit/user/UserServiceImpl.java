@@ -1,6 +1,8 @@
 package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.errors.ValidationException;
@@ -15,11 +17,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
+    public List<UserDto> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
                 .stream()
                 .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());

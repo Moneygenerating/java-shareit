@@ -1,11 +1,12 @@
 package ru.practicum.shareit.user;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
-    List<UserDto> getAllUsers();
+    List<UserDto> getAllUsers(Pageable pageable);
 
     UserDto createUser(UserDto user);
 

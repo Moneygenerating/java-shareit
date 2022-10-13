@@ -29,7 +29,7 @@ public class ItemController {
     public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId,
                                  @RequestParam(value = "from", required = false,
                                          defaultValue = "0") @PositiveOrZero Integer from,
-                                 @RequestParam(value = "size", required = false, defaultValue = "50") Integer size) {
+                                 @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         log.info("Запрос item get item");
         return itemService.getItems(userId, PageRequest.of(from / size, size));
     }
@@ -45,7 +45,7 @@ public class ItemController {
                                           @RequestParam(value = "from", required = false,
                                                   defaultValue = "0") @PositiveOrZero Integer from,
                                           @RequestParam(value = "size", required = false,
-                                                  defaultValue = "50") Integer size) {
+                                                  defaultValue = "10") Integer size) {
         log.info("Запрос item get /search");
         return itemService.getAvailableItems(text.toLowerCase(), PageRequest.of(from / size, size));
     }

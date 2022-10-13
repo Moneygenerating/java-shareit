@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.errors.NotFoundException;
-import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -42,7 +41,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class, ValidationException.class})
+    @Transactional(rollbackFor = {Exception.class})
     public ItemRequestDto saveItem(ItemRequestDto itemRequestDto, Long userId) {
         //проверим есть ли такой юзер
         checkUserEntityById(userId);
