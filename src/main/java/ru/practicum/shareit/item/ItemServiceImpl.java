@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
@@ -34,9 +35,9 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
 
     @Override
-    public List<ItemInfoDto> getItems(Long userId) {
+    public List<ItemInfoDto> getItems(Long userId, Pageable pageable) {
 
-        return itemRepository.findAll().stream()
+        return itemRepository.findAll(pageable).stream()
                 .filter(item -> item.getOwner().getId().equals(userId))
                 .map(ItemMapper::toItemInfoDto)
                 .peek(itemInfoDto -> {
@@ -113,11 +114,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAvailableItems(String text) {
+    public List<ItemDto> getAvailableItems(String text, Pageable pageable) {
         if (text.isEmpty()) {
             return new ArrayList<>();
         } else {
-            return itemRepository.findAll()
+            return itemRepository.findAll(pageable)
                     .stream()
                     .filter(item ->
                             item.getAvailable()
