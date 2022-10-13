@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class ItemController {
 
     @Autowired

@@ -14,6 +14,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
@@ -33,6 +34,8 @@ public class ItemServiceImpl implements ItemService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public List<ItemInfoDto> getItems(Long userId, Pageable pageable) {
@@ -59,6 +62,14 @@ public class ItemServiceImpl implements ItemService {
         if (isExistCheckFieldsOfItem(itemDto)) {
             User user = userRepository.getReferenceById(userId);
             Item item = ItemMapper.toItem(itemDto, user);
+
+            //зададим request для item
+            if (itemDto.getRequestId() != null) {
+                if (itemRequestRepository.existsById(itemDto.getRequestId())) {
+                    item.setRequest(itemRequestRepository.getReferenceById(itemDto.getRequestId()));
+                }
+            }
+
             return ItemMapper.toItemDto(itemRepository.save(item));
         }
         return null;

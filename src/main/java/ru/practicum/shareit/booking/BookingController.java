@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/bookings")
 @Slf4j
+@Validated
 public class BookingController {
     @Autowired
     BookingService bookingService;
