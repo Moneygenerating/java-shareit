@@ -57,7 +57,7 @@ class ItemRepositoryTest {
 
     @Test
     void findAllByRequestId() {
-        final List<Item> byRequestId = itemRepository.findAllByRequestId(2L);
+        final List<Item> byRequestId = itemRepository.findAllByRequestId(itemRequestOne.getId());
         assertNotNull(byRequestId);
         assertEquals(itemOne, byRequestId.get(0));
     }

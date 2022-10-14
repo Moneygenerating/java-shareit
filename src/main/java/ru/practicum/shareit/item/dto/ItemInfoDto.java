@@ -20,6 +20,8 @@ public class ItemInfoDto {
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BookingDto {
         Long id;
         Long bookerId;
