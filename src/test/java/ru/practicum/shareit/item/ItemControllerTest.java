@@ -76,7 +76,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void getS() throws Exception {
+    void getItemsFromUserID() throws Exception {
         when(itemService.getItems(userOne.getId(), PageRequest.ofSize(10)))
                 .thenReturn(List.of(itemInfoDtoOther));
 
@@ -101,7 +101,8 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$[0].comments[0].id", is(itemInfoDtoOther.getComments().get(0).getId()),
                         Long.class))
                 .andExpect(jsonPath("$[0].requestId", is(itemInfoDtoOther.getRequestId()), Long.class));
-        //toDO
+
+        verify(itemService, times(1)).getItems(userOne.getId(), PageRequest.ofSize(10));
     }
 
     @Test
