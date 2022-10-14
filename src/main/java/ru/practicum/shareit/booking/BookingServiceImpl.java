@@ -9,8 +9,11 @@ import ru.practicum.shareit.booking.dto.BookingShortDto;
 import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +39,13 @@ public class BookingServiceImpl implements BookingService {
             }
             booking.setBookerId(userId);
             booking.setStatus(BookingState.WAITING);
-            return BookingMapper.bookingToDto(bookingRepository.save(booking));
+
+            BookingDto bookingDtoResult = BookingMapper.bookingToDto(bookingRepository.save(booking));
+            bookingDtoResult.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
+
+            UserDto userDto = UserMapper.toUserDto(userRepository.getReferenceById(booking.getBookerId()));
+            bookingDtoResult.setBooker(new BookingDto.UserNewDto(userDto.getId(), userDto.getName(),userDto.getEmail()));
+            return bookingDtoResult;
         }
         throw new ValidationException("не удалось сохранить бронирование");
     }

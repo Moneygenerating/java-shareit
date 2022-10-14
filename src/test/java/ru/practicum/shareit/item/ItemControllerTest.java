@@ -90,11 +90,16 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$[0].description", is(itemInfoDtoOther.getDescription())))
                 .andExpect(jsonPath("$[0].available", is(itemInfoDtoOther.getAvailable())))
                 .andExpect(jsonPath("$[0].owner", is(itemInfoDtoOther.getOwner()), Long.class))
-                .andExpect(jsonPath("$[0].lastBooking.id", is(itemInfoDtoOther.getLastBooking().getId()), Long.class))
-                .andExpect(jsonPath("$[0].lastBooking.bookerId", is(itemInfoDtoOther.getLastBooking().getBookerId()), Long.class))
-                .andExpect(jsonPath("$[0].nextBooking.id", is(itemInfoDtoOther.getNextBooking().getId()), Long.class))
-                .andExpect(jsonPath("$[0].nextBooking.bookerId", is(itemInfoDtoOther.getNextBooking().getBookerId()), Long.class))
-                .andExpect(jsonPath("$[0].comments[0].id", is(itemInfoDtoOther.getComments().get(0).getId()),  Long.class))
+                .andExpect(jsonPath("$[0].lastBooking.id", is(itemInfoDtoOther.getLastBooking().getId()),
+                        Long.class))
+                .andExpect(jsonPath("$[0].lastBooking.bookerId", is(itemInfoDtoOther.getLastBooking().getBookerId()),
+                        Long.class))
+                .andExpect(jsonPath("$[0].nextBooking.id", is(itemInfoDtoOther.getNextBooking().getId()),
+                        Long.class))
+                .andExpect(jsonPath("$[0].nextBooking.bookerId", is(itemInfoDtoOther.getNextBooking().getBookerId()),
+                        Long.class))
+                .andExpect(jsonPath("$[0].comments[0].id", is(itemInfoDtoOther.getComments().get(0).getId()),
+                        Long.class))
                 .andExpect(jsonPath("$[0].requestId", is(itemInfoDtoOther.getRequestId()), Long.class));
         //toDO
     }
