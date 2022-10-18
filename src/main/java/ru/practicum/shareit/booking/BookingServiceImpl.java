@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -9,7 +10,9 @@ import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +27,7 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public BookingDto save(BookingDto bookingDto, Long userId) {
         if (checkUserExist(userId) && isBookingFieldsExists(bookingDto)) {
@@ -35,12 +38,18 @@ public class BookingServiceImpl implements BookingService {
             }
             booking.setBookerId(userId);
             booking.setStatus(BookingState.WAITING);
-            return BookingMapper.bookingToDto(bookingRepository.save(booking));
+
+            BookingDto bookingDtoResult = BookingMapper.bookingToDto(bookingRepository.save(booking));
+            bookingDtoResult.setItem(BookingMapper.itemToBookingNewDto(itemRepository.getReferenceById(booking.getItemId())));
+
+            UserDto userDto = UserMapper.toUserDto(userRepository.getReferenceById(booking.getBookerId()));
+            bookingDtoResult.setBooker(new BookingDto.UserNewDto(userDto.getId(), userDto.getName(),userDto.getEmail()));
+            return bookingDtoResult;
         }
         throw new ValidationException("не удалось сохранить бронирование");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public BookingDto approveBooking(Long userId, Long bookingId, Boolean isApproved) {
         Booking booking = bookingRepository.getReferenceById(bookingId);
@@ -78,13 +87,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllBookings(Long userId, String status) {
+    public List<BookingDto> getAllBookings(Long userId, String status, Pageable pageable) {
         List<Booking> bookings;
         BookingState bookingStatus = parseStatus(status);
         LocalDateTime dt = LocalDateTime.now();
         switch (bookingStatus) {
             case ALL:
-                bookings = bookingRepository.findAllByBookerIdOrderByStartDesc(userId);
+                bookings = bookingRepository.findAllByBookerId(userId, pageable)
+                        .stream().collect(Collectors.toList());
                 break;
             case PAST:
                 bookings = bookingRepository.findBookerAllByPast(userId, dt);
@@ -102,7 +112,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getOwnerAllBookings(Long userId, String status) {
+    public List<BookingDto> getOwnerAllBookings(Long userId, String status, Pageable pageable) {
         List<Long> idsList = itemRepository
                 .findAllByOwner(userRepository.getReferenceById(userId))
                 .stream().map(Item::getId).collect(Collectors.toList());
@@ -112,7 +122,8 @@ public class BookingServiceImpl implements BookingService {
         BookingState bookingStatus = parseStatus(status);
         switch (bookingStatus) {
             case ALL:
-                bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(idsList);
+                bookings = bookingRepository.findAllByItemIdInOrderByStartDesc(idsList, pageable)
+                        .stream().collect(Collectors.toList());
                 break;
             case PAST:
                 bookings = bookingRepository.findItemsInThePast(idsList, dt);

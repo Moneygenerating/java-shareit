@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
@@ -13,6 +14,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequestRepository;
 import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
@@ -33,10 +35,12 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
 
-    @Override
-    public List<ItemInfoDto> getItems(Long userId) {
+    private final ItemRequestRepository itemRequestRepository;
 
-        return itemRepository.findAll().stream()
+    @Override
+    public List<ItemInfoDto> getItems(Long userId, Pageable pageable) {
+
+        return itemRepository.findAll(pageable).stream()
                 .filter(item -> item.getOwner().getId().equals(userId))
                 .map(ItemMapper::toItemInfoDto)
                 .peek(itemInfoDto -> {
@@ -47,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public ItemDto addNewItem(Long userId, ItemDto itemDto) {
 
@@ -58,18 +62,26 @@ public class ItemServiceImpl implements ItemService {
         if (isExistCheckFieldsOfItem(itemDto)) {
             User user = userRepository.getReferenceById(userId);
             Item item = ItemMapper.toItem(itemDto, user);
+
+            //зададим request для item
+            if (itemDto.getRequestId() != null) {
+                if (itemRequestRepository.existsById(itemDto.getRequestId())) {
+                    item.setRequest(itemRequestRepository.getReferenceById(itemDto.getRequestId()));
+                }
+            }
+
             return ItemMapper.toItemDto(itemRepository.save(item));
         }
         return null;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteItem(Long userId, Long itemId) {
         itemRepository.deleteByIdAndOwnerId(itemId, userId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public ItemDto updateItem(long userId, ItemDto itemDto, Long itemId) {
 
@@ -113,11 +125,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAvailableItems(String text) {
+    public List<ItemDto> getAvailableItems(String text, Pageable pageable) {
         if (text.isEmpty()) {
             return new ArrayList<>();
         } else {
-            return itemRepository.findAll()
+            return itemRepository.findAll(pageable)
                     .stream()
                     .filter(item ->
                             item.getAvailable()
@@ -128,7 +140,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public CommentDto addComment(Long userId, Long itemId, CommentDto commentDto) {
         if (!commentDto.getText().isBlank() &&

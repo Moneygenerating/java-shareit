@@ -16,9 +16,12 @@ public class ItemInfoDto {
     private BookingDto lastBooking;
     private BookingDto nextBooking;
     private List<CommentDto> comments;
+    private Long requestId;
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BookingDto {
         Long id;
         Long bookerId;

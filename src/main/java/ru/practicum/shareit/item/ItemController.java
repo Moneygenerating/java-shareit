@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -11,21 +12,26 @@ import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.service.Create;
 import ru.practicum.shareit.service.Update;
 
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class ItemController {
 
     @Autowired
     private ItemService itemService;
 
     @GetMapping
-    public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId,
+                                 @RequestParam(value = "from", required = false,
+                                         defaultValue = "0") @PositiveOrZero Integer from,
+                                 @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         log.info("Запрос item get item");
-        return itemService.getItems(userId);
+        return itemService.getItems(userId, PageRequest.of(from / size, size));
     }
 
     @GetMapping("/{itemId}")
@@ -35,9 +41,13 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getAvailableItem(@RequestParam String text) {
+    public List<ItemDto> getAvailableItem(@RequestParam String text,
+                                          @RequestParam(value = "from", required = false,
+                                                  defaultValue = "0") @PositiveOrZero Integer from,
+                                          @RequestParam(value = "size", required = false,
+                                                  defaultValue = "10") Integer size) {
         log.info("Запрос item get /search");
-        return itemService.getAvailableItems(text.toLowerCase());
+        return itemService.getAvailableItems(text.toLowerCase(), PageRequest.of(from / size, size));
     }
 
     @PostMapping

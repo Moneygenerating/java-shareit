@@ -9,5 +9,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByOwner(User owner);
 
+    List<Item> findAllByRequestId(Long id);
+
     void deleteByIdAndOwnerId(Long itemId, Long userId);
 }
