@@ -10,7 +10,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.service.Create;
 
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -47,7 +46,8 @@ public class BookingController {
     public List<BookingDto> getAllBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
-            @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
+            //@PositiveOrZero
+            @RequestParam(value = "from", required = false, defaultValue = "0") Integer from,
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 
         log.info("getAllBookings");
@@ -63,7 +63,8 @@ public class BookingController {
     public List<BookingDto> getOwnerAllBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
-            @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero Integer from,
+            //@PositiveOrZero
+            @RequestParam(value = "from", required = false, defaultValue = "0")  Integer from,
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 
         log.info("getOwnerAllBookings");

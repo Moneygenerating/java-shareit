@@ -12,7 +12,6 @@ import ru.practicum.shareit.item.dto.ItemInfoDto;
 import ru.practicum.shareit.service.Create;
 import ru.practicum.shareit.service.Update;
 
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -28,7 +27,8 @@ public class ItemController {
     @GetMapping
     public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId,
                                  @RequestParam(value = "from", required = false,
-                                         defaultValue = "0") @PositiveOrZero Integer from,
+                                         //@PositiveOrZero Integer from
+                                         defaultValue = "0") Integer from,
                                  @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         log.info("Запрос item get item");
         return itemService.getItems(userId, PageRequest.of(from / size, size));
@@ -43,7 +43,8 @@ public class ItemController {
     @GetMapping("/search")
     public List<ItemDto> getAvailableItem(@RequestParam String text,
                                           @RequestParam(value = "from", required = false,
-                                                  defaultValue = "0") @PositiveOrZero Integer from,
+                                                  //@PositiveOrZero Integer from
+                                                  defaultValue = "0") Integer from,
                                           @RequestParam(value = "size", required = false,
                                                   defaultValue = "10") Integer size) {
         log.info("Запрос item get /search");

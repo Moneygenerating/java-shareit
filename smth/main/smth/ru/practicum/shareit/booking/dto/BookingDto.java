@@ -5,8 +5,6 @@ import ru.practicum.shareit.booking.BookingState;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.service.Create;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,10 +17,11 @@ public class BookingDto {
     private Long id;
     private Long itemId;
     //дата и время начала бронирования
-    @FutureOrPresent(groups = {Create.class})
+    //@FutureOrPresent(groups = {Create.class}) надо добавить
     private LocalDateTime start;
     //дата и время конца бронирования
-    @Future(groups = {Create.class})
+
+    //@Future(groups = {Create.class}) (groups = {Create.class}) надо добавить
     private LocalDateTime end;
     //статус бронирования
     private BookingState status;

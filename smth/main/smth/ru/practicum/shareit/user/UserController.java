@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.service.Update;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import javax.validation.constraints.PositiveOrZero;
+
 import java.util.List;
 
 @RestController
@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getAllUsers(@RequestParam(value = "from", required = false, defaultValue = "0")
-                                     @PositiveOrZero int from,
+                                      int from,
                                      @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         log.info("Запрос user Get getAll");
         return userService.getAllUsers(PageRequest.of(from / size, size));

@@ -8,8 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
-import javax.validation.Valid;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -31,7 +29,8 @@ public class ItemRequestController {
     //добавить новый запрос вещи
     @PostMapping
     public ItemRequestDto createItemRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                            @Valid @RequestBody ItemRequestDto itemRequestDto) {
+                                            //@Valid
+                                             @RequestBody ItemRequestDto itemRequestDto) {
         log.info("createItemRequest");
 
         return itemRequestService.saveItem(itemRequestDto, userId);
@@ -41,7 +40,8 @@ public class ItemRequestController {
     @GetMapping("/all")
     public List<ItemRequestDto> getOtherAllRequests(
             @RequestHeader("X-Sharer-User-Id") Long userId,
-            @RequestParam(value = "from", required = false, defaultValue = "0") @PositiveOrZero int from,
+            //@PositiveOrZero int from
+            @RequestParam(value = "from", required = false, defaultValue = "0")  int from,
             @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         log.info("getOtherAllRequests");

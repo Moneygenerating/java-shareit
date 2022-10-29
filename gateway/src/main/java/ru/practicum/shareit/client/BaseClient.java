@@ -31,6 +31,11 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.GET, path, userId, parameters, null);
     }
 
+    //forUserGetAll
+    protected ResponseEntity<Object> getForUserRequest(@Nullable Map<String, Object> parameters) {
+        return makeAndSendRequest(HttpMethod.GET, "?from={from}&size={size}", null, parameters, null);
+    }
+
     protected <T> ResponseEntity<Object> post(String path, T body) {
         return post(path, null, null, body);
     }
@@ -79,7 +84,8 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.DELETE, path, userId, parameters, null);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId, @Nullable Map<String, Object> parameters, @Nullable T body) {
+    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Long userId,
+                                                          @Nullable Map<String, Object> parameters, @Nullable T body) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders(userId));
 
         ResponseEntity<Object> shareitServerResponse;
