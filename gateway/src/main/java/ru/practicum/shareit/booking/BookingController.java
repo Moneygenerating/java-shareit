@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.errors.ValidationException;
+import ru.practicum.shareit.service.Create;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -35,7 +36,7 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Object> bookItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                                           @RequestBody @Valid BookItemRequestDto requestDto) {
+                                           @RequestBody @Validated({Create.class}) BookItemRequestDto requestDto) {
         log.info("Creating booking {}, userId={}", requestDto, userId);
         return bookingClient.bookItem(userId, requestDto);
     }
@@ -59,8 +60,7 @@ public class BookingController {
     public ResponseEntity<Object> getOwnerAllBookings(
             @RequestHeader("X-Sharer-User-Id") Long userId,
             @RequestParam(value = "state", required = false, defaultValue = "ALL") String state,
-            @PositiveOrZero
-            @RequestParam(value = "from", required = false, defaultValue = "0") Integer from,
+            @PositiveOrZero @RequestParam(value = "from", required = false, defaultValue = "0") Integer from,
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 
         log.info("getOwnerAllBookings");
