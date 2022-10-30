@@ -22,6 +22,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,7 @@ public class ItemServiceImpl implements ItemService {
                         setLastAndNextBooking(itemInfoDto);
                     }
                 })
+                .sorted(Comparator.comparing(ItemInfoDto::getId))
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +117,7 @@ public class ItemServiceImpl implements ItemService {
                     .stream().map(comment -> {
                         User user = userRepository.getReferenceById(comment.getUser().getId());
                         return CommentMapper.commentToDto(comment, user.getName());
-                    }).sorted().collect(Collectors.toList()));
+                    }).collect(Collectors.toList()));
 
             if (itemInfoDto.getOwner().equals(userId)) {
                 setLastAndNextBooking(itemInfoDto);
