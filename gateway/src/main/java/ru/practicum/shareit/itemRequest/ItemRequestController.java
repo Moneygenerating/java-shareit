@@ -1,23 +1,24 @@
 package ru.practicum.shareit.itemRequest;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
-import ru.practicum.shareit.service.Create;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
 @RequestMapping(path = "/requests")
+@RequiredArgsConstructor
 @Validated
 @Slf4j
 public class ItemRequestController {
 
-    private ItemRequestClient itemRequestClient;
+    private final ItemRequestClient itemRequestClient;
 
     //получить список своих запросов вместе с данными об ответах на них
     @GetMapping

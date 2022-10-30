@@ -23,8 +23,7 @@ public class ItemController {
 
     @GetMapping
     public List<ItemInfoDto> get(@RequestHeader("X-Sharer-User-Id") long userId,
-                                 @RequestParam(value = "from", required = false,
-                                         defaultValue = "0") Integer from,
+                                 @RequestParam(value = "from", required = false, defaultValue = "0") Integer from,
                                  @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         log.info("Запрос item get item");
         return itemService.getItems(userId, PageRequest.of(from / size, size));
