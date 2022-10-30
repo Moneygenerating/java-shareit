@@ -9,8 +9,6 @@ import org.springframework.boot.test.json.JsonContent;
 import java.io.IOException;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 @JsonTest
 class UserTest {
     @Autowired
