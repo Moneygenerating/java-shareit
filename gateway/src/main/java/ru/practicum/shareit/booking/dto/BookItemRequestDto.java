@@ -16,8 +16,8 @@ import ru.practicum.shareit.service.Create;
 @BookingTimeValidation(start = "start", end = "end", groups = {Create.class})
 public class BookItemRequestDto {
     private long itemId;
-    @FutureOrPresent
+    @FutureOrPresent(groups = {Create.class})
     private LocalDateTime start;
-    @Future
+    @Future(groups = {Create.class})
     private LocalDateTime end;
 }

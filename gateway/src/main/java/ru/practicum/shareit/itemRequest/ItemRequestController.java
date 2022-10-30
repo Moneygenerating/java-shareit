@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
+import ru.practicum.shareit.service.Create;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
@@ -29,7 +31,9 @@ public class ItemRequestController {
     public ResponseEntity<Object> createItemRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                     @Valid @RequestBody ItemRequestDto itemRequestDto) {
         log.info("createItemRequest");
-
+        if (itemRequestDto.getDescription() == null) {
+            throw new ValidationException("Не указано описание");
+        }
         return itemRequestClient.save(itemRequestDto, userId);
     }
 

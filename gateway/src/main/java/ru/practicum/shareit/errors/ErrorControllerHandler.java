@@ -45,6 +45,11 @@ public class ErrorControllerHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<?> handleArgumentConstraintException(final org.hibernate.exception.ConstraintViolationException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<?> handleEntityNotFound(final EntityNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }

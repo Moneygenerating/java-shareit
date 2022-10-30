@@ -3,8 +3,12 @@ package ru.practicum.shareit.itemRequest.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import ru.practicum.shareit.service.Create;
+import ru.practicum.shareit.service.Update;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +19,7 @@ public class ItemRequestDto {
     //уникальный идентификатор запроса
     private Long id;
     //текст запроса, содержащий описание требуемой вещи
-    @NotEmpty
+    //@NotEmpty(groups = {Create.class, Update.class})
     private String description;
     //пользователь, создавший запрос
     private Long requesterId;
