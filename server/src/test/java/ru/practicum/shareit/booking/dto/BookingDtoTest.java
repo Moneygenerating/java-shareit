@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
-import ru.practicum.shareit.booking.BookingState;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.item.dto.CommentDto;
 
 import java.io.IOException;

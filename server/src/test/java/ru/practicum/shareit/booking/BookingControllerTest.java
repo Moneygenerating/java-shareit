@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
+import ru.practicum.shareit.booking.model.BookingState;
+import ru.practicum.shareit.booking.service.BookingService;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;

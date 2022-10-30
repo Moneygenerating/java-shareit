@@ -14,6 +14,8 @@ import ru.practicum.shareit.errors.NotFoundException;
 import ru.practicum.shareit.errors.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.service.UserMapper;
+import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
