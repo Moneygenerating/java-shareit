@@ -115,7 +115,7 @@ public class ItemServiceImpl implements ItemService {
                     .stream().map(comment -> {
                         User user = userRepository.getReferenceById(comment.getUser().getId());
                         return CommentMapper.commentToDto(comment, user.getName());
-                    }).collect(Collectors.toList()));
+                    }).sorted().collect(Collectors.toList()));
 
             if (itemInfoDto.getOwner().equals(userId)) {
                 setLastAndNextBooking(itemInfoDto);

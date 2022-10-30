@@ -33,7 +33,8 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Object> getByItemId(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable Long itemId) {
+    public ResponseEntity<Object> getByItemId(@RequestHeader("X-Sharer-User-Id") long userId,
+                                              @PathVariable("itemId") Long itemId) {
         log.info("Запрос item get getByItemId");
         return itemClient.getItem(itemId, userId);
     }
@@ -69,8 +70,8 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     ResponseEntity<Object> updateItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                       @Validated({Update.class}) @RequestBody ItemDto itemDto,
-                       @PathVariable Long itemId) {
+                                      @Validated({Update.class}) @RequestBody ItemDto itemDto,
+                                      @PathVariable Long itemId) {
         log.info("Запрос item update");
         return itemClient.updateItem(userId, itemDto, itemId);
     }
